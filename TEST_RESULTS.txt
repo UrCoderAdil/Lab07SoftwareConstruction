@@ -1,0 +1,22 @@
+Verification on 26 October 2026
+Eclipse IDE 2025-09 (4.37), Java 21.0.8, JUnit 4
+
+RED: SocialNetworkTest in Eclipse: Runs 16/16, Errors 16, Failures 0.
+Both method stubs throw UnsupportedOperationException: RED phase: not implemented.
+
+GREEN: Same SocialNetworkTest in Eclipse: Runs 16/16, Errors 0, Failures 0.
+FULL: Project JUnit run in Eclipse: Runs 18/18, Errors 0, Failures 0.
+Command-line cross-check: JUnit 4.13.2: OK (18 tests).
+
+Main in Eclipse:
+Lab 07 - Social Network Analysis
+Input: 4 offline sample tweets
+Following graph (author -> mentioned users):
+  alice -> [bob, carol]
+  bob -> [carol]
+  dave -> [carol]
+Top 10 influencers (or all if fewer than 10):
+1. carol - 3 follower(s)
+2. bob - 1 follower(s)
+3. alice - 0 follower(s)
+4. dave - 0 follower(s)

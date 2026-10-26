@@ -22,7 +22,19 @@ public class SocialNetwork {
      * permitted by the assignment. Every returned user is an author or mention.
      */
     public static Map<String, Set<String>> guessFollowsGraph(List<Tweet> tweets) {
-        throw new UnsupportedOperationException("RED phase: not implemented");
+        Map<String, Set<String>> graph = new HashMap<>();
+        for (Tweet tweet : tweets) {
+            String author = tweet.getAuthor().toLowerCase(Locale.ROOT);
+            Matcher matcher = MENTION.matcher(tweet.getText());
+            while (matcher.find()) {
+                String mentioned = matcher.group(1).toLowerCase(Locale.ROOT);
+                if (!author.equals(mentioned)) {
+                    graph.computeIfAbsent(author, key -> new HashSet<>())
+                            .add(mentioned);
+                }
+            }
+        }
+        return graph;
     }
 
     /**
@@ -32,6 +44,19 @@ public class SocialNetwork {
      * in descending follower-count order. Ties may appear in any order.
      */
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
-        throw new UnsupportedOperationException("RED phase: not implemented");
+        Map<String, Integer> followers = new HashMap<>();
+        for (String user : followsGraph.keySet()) {
+            followers.putIfAbsent(user.toLowerCase(Locale.ROOT), 0);
+        }
+        for (Set<String> followed : followsGraph.values()) {
+            for (String user : followed) {
+                followers.merge(user.toLowerCase(Locale.ROOT), 1, Integer::sum);
+            }
+        }
+        List<String> ranking = new ArrayList<>(followers.keySet());
+        // Alphabetical ties make demonstrations reproducible; tests allow any tie order.
+        ranking.sort(Comparator.<String>comparingInt(followers::get).reversed()
+                .thenComparing(Comparator.naturalOrder()));
+        return ranking;
     }
 }
